@@ -2,19 +2,36 @@ import DeleteModal from "@/components/templates/index/DeleteModal";
 import EditModal from "@/components/templates/index/EditModal";
 import { useState } from "react";
 import styles from "@/styles/Course.module.css";
-const CoursesItem = ({ title, image }) => {
+import swal from "sweetalert";
+const CoursesItem = ({ title, _id }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const hideEditModal = () => setShowEditModal(false);
   const hideDeleteModal = () => setShowDeleteModal(false);
 
+  const removeCourse = async () => {
+    const res = await fetch(`/api/courses/${_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.status === 202) {
+      hideDeleteModal();
+      swal({
+        title: "دوره مورد نظر با موفقیت حذف شد",
+        icon: "success",
+      });
+    }
+  };
   return (
     <>
       <li className={styles.courses_item}>
         <div className={styles.courses_img_title}>
           <img
-            src={image}
+            src={"/images/courses/js.png"}
             alt="course-item-img"
             className={styles.courses_img}
           />
@@ -40,7 +57,7 @@ const CoursesItem = ({ title, image }) => {
         </div>
       </li>
       {showEditModal && <EditModal hideEditModal={hideEditModal} />}
-      {showDeleteModal && <DeleteModal hideDeleteModal={hideDeleteModal} />}
+      {showDeleteModal && <DeleteModal hideDeleteModal={hideDeleteModal} removeHandler={removeCourse}/>}
     </>
   );
 };
