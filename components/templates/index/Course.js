@@ -1,5 +1,5 @@
 import CoursesItem from "@/components/modules/coursesItem/CoursesItem";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddCourseModal from "./AddCourseModal";
 import styles from "@/styles/Course.module.css";
 

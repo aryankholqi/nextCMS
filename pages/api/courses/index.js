@@ -24,8 +24,16 @@ const handler = async (req, res) => {
     }
     case "GET": {
       try {
-        const courses = await courseModel.find();
-        return res.json({ data: courses });
+        if (req.query.q) {
+          const { q } = req.query;
+          const filteredCourses = await courseModel.find({
+            title: { $regex: q },
+          });
+          return res.json({ data: filteredCourses });
+        } else {
+          const courses = await courseModel.find();
+          return res.json({ data: courses });
+        }
       } catch (err) {
         return res.status(500).json({ message: "Internal Server error" });
       }
