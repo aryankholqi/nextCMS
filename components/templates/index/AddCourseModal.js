@@ -7,7 +7,7 @@ import styles from "@/styles/Modal.module.css";
 import { useState } from "react";
 import swal from "sweetalert";
 
-const AddCourseModal = ({ hideAddCourseModal }) => {
+const AddCourseModal = ({ hideAddCourseModal, refetchCourses }) => {
   const [title, setTitle] = useState("");
 
   const addNewCourse = async (e) => {
@@ -24,9 +24,10 @@ const AddCourseModal = ({ hideAddCourseModal }) => {
       swal({
         title: "دوره موردنظر با موفقیت ایجاد شد",
         icon: "success",
-        buttons:"متوجه شدم"
+        buttons: "متوجه شدم",
       });
       setTitle("");
+      refetchCourses();
       hideAddCourseModal();
     }
   };

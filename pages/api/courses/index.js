@@ -22,6 +22,14 @@ const handler = async (req, res) => {
         return res.status(500).json({ message: "Server Error" });
       }
     }
+    case "GET": {
+      try {
+        const courses = await courseModel.find();
+        return res.json({ data: courses });
+      } catch (err) {
+        return res.status(500).json({ message: "Internal Server error" });
+      }
+    }
   }
 };
 

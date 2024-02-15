@@ -26,6 +26,25 @@ const CoursesItem = ({ title, _id }) => {
       });
     }
   };
+
+  const updateCourse = async (event, title) => {
+    event.preventDefault();
+    const res = await fetch(`/api/courses/${_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title }),
+    });
+
+    if (res.status === 200) {
+      swal({
+        title: "دوره مورد نظر با موفقیت ویرایش شد",
+        icon: "success",
+      });
+      hideEditModal();
+    }
+  };
   return (
     <>
       <li className={styles.courses_item}>
@@ -56,8 +75,15 @@ const CoursesItem = ({ title, _id }) => {
           </a>
         </div>
       </li>
-      {showEditModal && <EditModal hideEditModal={hideEditModal} />}
-      {showDeleteModal && <DeleteModal hideDeleteModal={hideDeleteModal} removeHandler={removeCourse}/>}
+      {showEditModal && (
+        <EditModal hideEditModal={hideEditModal} updateHandler={updateCourse} />
+      )}
+      {showDeleteModal && (
+        <DeleteModal
+          hideDeleteModal={hideDeleteModal}
+          removeHandler={removeCourse}
+        />
+      )}
     </>
   );
 };
