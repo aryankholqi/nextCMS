@@ -33,6 +33,17 @@ const handler = async (req, res) => {
           return res.status(500).json({ message: "Internal Server error" });
         }
       }
+      case "GET": {
+        try {
+          const mainCourse = await courseModel
+            .findOne({ _id: courseId }, "-__v")
+            .populate("comments", "-__v")
+            .lean();
+          return res.json({ data: mainCourse });
+        } catch (err) {
+          return res.status(500).json({ message: "Interal Server Error" });
+        }
+      }
     }
   } else {
     return res.status(422).json({ message: "course id is not valid" });

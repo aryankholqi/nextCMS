@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import teacherModel from "./Teacher";
+import teacherModel, { schema as teacherSchema } from "./Teacher";
+import commentModel from "./Comment";
 
 const schema = mongoose.Schema(
   {
@@ -17,7 +18,7 @@ const schema = mongoose.Schema(
       max: 5000000,
     },
     teacher: {
-      type: mongoose.Types.ObjectId,
+      type: teacherSchema,
       required: true,
       ref: "Teacher",
     },
@@ -26,6 +27,12 @@ const schema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+schema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "course",
+});
 
 const courseModel = mongoose.models?.Course || mongoose.model("Course", schema);
 export default courseModel;
